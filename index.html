@@ -511,14 +511,14 @@
 <script>
 /* =========================================================
    DATA — mudah diedit tanpa membongkar seluruh JavaScript
-   Ganti path "images/..." sesuai asset yang kamu miliki.
+   Ganti path "..." sesuai asset yang kamu miliki.
    ========================================================= */
 
 // Misi 1 — Kenali aturan lewat situasi kontras
 const dataMisi1 = {
   question: "Perhatikan dua situasi ini. Mana yang sesuai aturan di sekolah?",
-  imageA: "images/03-duduk-tertib.png",
-  imageB: "images/04-berlari.png",
+  imageA: "03-duduk-tertib.png",
+  imageB: "04-berlari.png",
   labelA: "Duduk tertib saat belajar",
   labelB: "Berlari di dalam kelas",
   feedbackA: "Betul. Duduk tertib membantu kegiatan belajar berjalan nyaman dan aman.",
@@ -531,21 +531,21 @@ const kategoriRumahSekolah = [
   {id:"sekolah", emoji:"🏫", name:"SEKOLAH"}
 ];
 const kartuRumahSekolah = [
-  {img:"images/05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
-  {img:"images/06-kamar-berantakan.png", label:"Membiarkan kamar berantakan", target:"rumah"},
-  {img:"images/11-merapikan-mainan.png", label:"Merapikan mainan", target:"rumah"},
-  {img:"images/10-cuci-tangan.png", label:"Mencuci tangan sebelum makan", target:"rumah"},
-  {img:"images/03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
-  {img:"images/17-mendengarkan-teman.png", label:"Mendengarkan teman", target:"sekolah"},
-  {img:"images/18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
-  {img:"images/16-berjalan-tertib.png", label:"Berjalan dengan tertib", target:"sekolah"}
+  {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
+  {img:"06-kamar-berantakan.png", label:"Membiarkan kamar berantakan", target:"rumah"},
+  {img:"11-merapikan-mainan.png", label:"Merapikan mainan", target:"rumah"},
+  {img:"10-cuci-tangan.png", label:"Mencuci tangan sebelum makan", target:"rumah"},
+  {img:"03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
+  {img:"17-mendengarkan-teman.png", label:"Mendengarkan teman", target:"sekolah"},
+  {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
+  {img:"16-berjalan-tertib.png", label:"Berjalan dengan tertib", target:"sekolah"}
 ];
 
 const dataMisi3 = [
   {
     question: "Bandingkan dua situasi ini di rumah. Mana yang sebaiknya kita lakukan?",
-    imageA: "images/05-merapikan-tempat-tidur.png",
-    imageB: "images/06-kamar-berantakan.png",
+    imageA: "05-merapikan-tempat-tidur.png",
+    imageB: "06-kamar-berantakan.png",
     labelA: "Merapikan tempat tidur",
     labelB: "Membiarkan kamar berantakan",
     feedbackA: "Betul. Merapikan tempat tidur membuat kamar lebih rapi dan nyaman.",
@@ -553,8 +553,8 @@ const dataMisi3 = [
   },
   {
     question: "Setelah bermain, mana yang lebih sesuai aturan?",
-    imageA: "images/11-merapikan-mainan.png",
-    imageB: "images/25-mainan-berantakan.png",
+    imageA: "11-merapikan-mainan.png",
+    imageB: "25-mainan-berantakan.png",
     labelA: "Merapikan mainan setelah bermain",
     labelB: "Membiarkan mainan berserakan",
     feedbackA: "Betul. Merapikan mainan membuat tempat bermain tetap rapi dan nyaman.",
@@ -567,27 +567,27 @@ const kategoriBolehTidak = [
   {id:"tidak", emoji:"🚫", name:"TIDAK BOLEH"}
 ];
 const kartuBolehTidak = [
-  {img:"images/14-menjaga-kebersihan.png", label:"Menjaga kebersihan", target:"boleh"},
-  {img:"images/26-bermain-gawai.png", label:"Bermain gawai tanpa mengikuti aturan", target:"tidak"},
-  {img:"images/15-meminta-izin.png", label:"Meminta izin sebelum memakai barang", target:"boleh"},
-  {img:"images/04-berlari.png", label:"Berlari di dalam kelas", target:"tidak"},
-  {img:"images/21-tidak-berebut.png", label:"Tidak berebut", target:"boleh"},
-  {img:"images/27-mengobrol-saat-guru-menjelaskan.png", label:"Mengobrol saat guru menjelaskan", target:"tidak"},
-  {img:"images/24-mengembalikan-mainan.png", label:"Mengembalikan mainan ke tempatnya", target:"boleh"},
-  {img:"images/08-merebut-mainan.png", label:"Merebut mainan teman", target:"tidak"}
+  {img:"14-menjaga-kebersihan.png", label:"Menjaga kebersihan", target:"boleh"},
+  {img:"26-bermain-gawai.png", label:"Bermain gawai tanpa mengikuti aturan", target:"tidak"},
+  {img:"15-meminta-izin.png", label:"Meminta izin sebelum memakai barang", target:"boleh"},
+  {img:"04-berlari.png", label:"Berlari di dalam kelas", target:"tidak"},
+  {img:"21-tidak-berebut.png", label:"Tidak berebut", target:"boleh"},
+  {img:"27-mengobrol-saat-guru-menjelaskan.png", label:"Mengobrol saat guru menjelaskan", target:"tidak"},
+  {img:"24-mengembalikan-mainan.png", label:"Mengembalikan mainan ke tempatnya", target:"boleh"},
+  {img:"08-merebut-mainan.png", label:"Merebut mainan teman", target:"tidak"}
 ];
 
 const dataMisi5 = [
-  {img:"images/10-cuci-tangan.png", label:"Cuci tangan", order:1},
-  {img:"images/19-duduk-saat-makan.png", label:"Duduk dan makan", order:2},
-  {img:"images/20-makan-bersama.png", label:"Makan bersama dengan tertib", order:3}
+  {img:"10-cuci-tangan.png", label:"Cuci tangan", order:1},
+  {img:"19-duduk-saat-makan.png", label:"Duduk dan makan", order:2},
+  {img:"20-makan-bersama.png", label:"Makan bersama dengan tertib", order:3}
 ];
 
 const dataMisi6 = [
   {
     question: "Temanmu sedang berbicara. Apa yang sebaiknya kamu lakukan?",
-    imageA: "images/17-mendengarkan-teman.png",
-    imageB: "images/27-mengobrol-saat-guru-menjelaskan.png",
+    imageA: "17-mendengarkan-teman.png",
+    imageB: "27-mengobrol-saat-guru-menjelaskan.png",
     labelA: "Mendengarkan dengan baik",
     labelB: "Mengobrol sendiri",
     feedbackA: "Betul. Mendengarkan orang yang sedang berbicara menunjukkan sikap tertib dan menghargai teman.",
@@ -595,8 +595,8 @@ const dataMisi6 = [
   },
   {
     question: "Kamu selesai bermain. Apa yang sebaiknya kamu lakukan?",
-    imageA: "images/24-mengembalikan-mainan.png",
-    imageB: "images/25-mainan-berantakan.png",
+    imageA: "24-mengembalikan-mainan.png",
+    imageB: "25-mainan-berantakan.png",
     labelA: "Mengembalikan mainan ke tempatnya",
     labelB: "Meninggalkan mainan berserakan",
     feedbackA: "Betul. Mengembalikan mainan membuat tempat bermain tetap rapi.",
@@ -604,8 +604,8 @@ const dataMisi6 = [
   },
   {
     question: "Saat mengambil makanan bersama teman, apa yang sebaiknya kamu lakukan?",
-    imageA: "images/12-antre-makanan.png",
-    imageB: "images/02-berebut.png",
+    imageA: "12-antre-makanan.png",
+    imageB: "02-berebut.png",
     labelA: "Antre menunggu giliran",
     labelB: "Berebut makanan",
     feedbackA: "Betul. Antre membuat semua orang mendapat giliran dengan tertib.",
@@ -616,8 +616,8 @@ const dataMisi6 = [
 const dataMisi7 = [
   {
     question: "Lihat situasi ini. Apa yang sebaiknya dilakukan?",
-    imageA: "images/06-kamar-berantakan.png",
-    imageB: "images/05-merapikan-tempat-tidur.png",
+    imageA: "06-kamar-berantakan.png",
+    imageB: "05-merapikan-tempat-tidur.png",
     labelA: "Membiarkan kamar berantakan",
     labelB: "Merapikan kamar",
     feedbackA: "Coba pikirkan lagi. Kamar yang berantakan perlu dirapikan.",
@@ -625,8 +625,8 @@ const dataMisi7 = [
   },
   {
     question: "Ada mainan yang berserakan. Apa yang sebaiknya dilakukan?",
-    imageA: "images/25-mainan-berantakan.png",
-    imageB: "images/24-mengembalikan-mainan.png",
+    imageA: "25-mainan-berantakan.png",
+    imageB: "24-mengembalikan-mainan.png",
     labelA: "Membiarkan mainan berserakan",
     labelB: "Mengembalikan mainan ke tempatnya",
     feedbackA: "Coba pikirkan lagi. Mainan yang berserakan sebaiknya dirapikan.",
@@ -634,8 +634,8 @@ const dataMisi7 = [
   },
   {
     question: "Ada anak berlari di dalam kelas. Apa yang sebaiknya dilakukan?",
-    imageA: "images/04-berlari.png",
-    imageB: "images/16-berjalan-tertib.png",
+    imageA: "04-berlari.png",
+    imageB: "16-berjalan-tertib.png",
     labelA: "Tetap berlari di kelas",
     labelB: "Berjalan dengan tertib",
     feedbackA: "Coba pikirkan lagi. Berlari di dalam kelas kurang aman.",
@@ -643,8 +643,8 @@ const dataMisi7 = [
   },
   {
     question: "Guru sedang menjelaskan. Apa yang sebaiknya dilakukan?",
-    imageA: "images/27-mengobrol-saat-guru-menjelaskan.png",
-    imageB: "images/03-duduk-tertib.png",
+    imageA: "27-mengobrol-saat-guru-menjelaskan.png",
+    imageB: "03-duduk-tertib.png",
     labelA: "Mengobrol sendiri",
     labelB: "Duduk tertib dan memperhatikan",
     feedbackA: "Coba pikirkan lagi. Saat guru menjelaskan, sebaiknya kita memperhatikan.",
@@ -659,14 +659,14 @@ const kategoriFinal = [
   {id:"bermain", emoji:"🎲", name:"SAAT BERMAIN"}
 ];
 const kartuFinal = [
-  {img:"images/05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
-  {img:"images/15-meminta-izin.png", label:"Meminta izin", target:"rumah"},
-  {img:"images/03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
-  {img:"images/18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
-  {img:"images/12-antre-makanan.png", label:"Antre mengambil makanan", target:"makan"},
-  {img:"images/19-duduk-saat-makan.png", label:"Duduk saat makan", target:"makan"},
-  {img:"images/07-bermain-bergiliran.png", label:"Bermain bergiliran", target:"bermain"},
-  {img:"images/24-mengembalikan-mainan.png", label:"Mengembalikan mainan", target:"bermain"}
+  {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
+  {img:"15-meminta-izin.png", label:"Meminta izin", target:"rumah"},
+  {img:"03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
+  {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
+  {img:"12-antre-makanan.png", label:"Antre mengambil makanan", target:"makan"},
+  {img:"19-duduk-saat-makan.png", label:"Duduk saat makan", target:"makan"},
+  {img:"07-bermain-bergiliran.png", label:"Bermain bergiliran", target:"bermain"},
+  {img:"24-mengembalikan-mainan.png", label:"Mengembalikan mainan", target:"bermain"}
 ];
 
 const kesimpulanAturan = "Aturan adalah hal yang harus kita lakukan supaya hidup menjadi teratur, nyaman, dan aman.";
