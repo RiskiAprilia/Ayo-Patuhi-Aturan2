@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Yuk, Kenali Aturan! - Misi Detektif Aturan</title>
+<style>
+  :root{
+    --bg-1:#fef6e4;
+    --bg-2:#eef7ff;
+    --card-bg:#ffffff;
+    --ink:#2e2c3b;
+    --ink-soft:#5c5a6e;
+    --accent:#6c63ff;
+    --accent-soft:#e7e5ff;
+    --accent-dark:#4b43d1;
+    --select:#cfe8ff;
+    --select-border:#7cb8f0;
+    --peach:#ffd9b3;
+    --mint:#bdf0d6;
+    --shadow: 0 8px 22px rgba(60,50,110,0.14);
+    --radius-lg: 28px;
+    --radius-md: 20px;
+    --radius-sm: 14px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;
+    font-family: "Trebuchet MS", "Segoe UI", Verdana, system-ui, sans-serif;
+    background: linear-gradient(160deg, var(--bg-2), var(--bg-1));
+    color:var(--ink);
+    overflow:hidden;
+  }
+  #app{
+    position:relative;
+    width:100vw;height:100vh;
+    display:flex;flex-direction:column;
+  }
+
+  /* ---------- TOP BAR ---------- */
+  #topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 26px;
+    flex-shrink:0;
+  }
+  #topbar .brand{
+    display:flex;align-items:center;gap:10px;
+    font-size:20px;font-weight:800;color:var(--accent-dark);
+  }
+  #topbar .brand .dot{
+    width:14px;height:14px;border-radius:50%;background:var(--accent);
+  }
+  #progressWrap{
+    display:flex;gap:8px;align-items:center;
+  }
+  .progress-star{
+    width:26px;height:26px;border-radius:50%;
+    background:#fff;border:3px solid #e3e0f5;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;color:#bbb;font-weight:700;
+    transition:all .25s ease;
+  }
+  .progress-star.done{
+    background:var(--accent);border-color:var(--accent-dark);color:#fff;
+  }
+  .progress-star.current{
+    border-color:var(--accent);color:var(--accent-dark);transform:scale(1.15);
+  }
+  #btnHome{
+    border:none;background:#fff;border-radius:16px;
+    padding:10px 18px;font-size:15px;font-weight:700;color:var(--ink-soft);
+    box-shadow:var(--shadow);cursor:pointer;
+  }
+
+  /* ---------- SCREENS ---------- */
+  #screens{
+    flex:1;position:relative;overflow:hidden;
+  }
+  .screen{
+    position:absolute;inset:0;
+    display:none;
+    flex-direction:column;
+    align-items:center;
+    padding:10px 40px 20px;
+    overflow-y:auto;
+    overflow-x:hidden;
+  }
+  .screen.active{
+    display:flex;
+    animation: fadein .45s ease;
+  }
+  @keyframes fadein{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+  .screen-inner{
+    width:100%;max-width:1180px;
+    flex:1;
+    display:flex;flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    gap:14px;
+  }
+
+  h1.title{
+    font-size:clamp(26px,3.6vw,42px);
+    color:var(--accent-dark);
+    margin:4px 0 0;
+    text-align:center;
+    font-weight:900;
+  }
+  p.subtitle{
+    font-size:clamp(16px,2vw,22px);
+    color:var(--ink-soft);
+    text-align:center;
+    margin:0 0 6px;
+    max-width:820px;
+  }
+  p.question{
+    font-size:clamp(19px,2.4vw,27px);
+    color:var(--ink);
+    text-align:center;
+    font-weight:700;
+    margin:2px 0 8px;
+  }
+
+  /* Rara guide bubble */
+  .rara-row{
+    display:flex;align-items:center;gap:14px;
+    background:#fff;border-radius:24px;
+    padding:12px 22px;
+    box-shadow:var(--shadow);
+    max-width:820px;
+  }
+  .rara-avatar{
+    width:58px;height:58px;border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #ffdcec, #ff9ecf 70%);
+    display:flex;align-items:center;justify-content:center;
+    font-size:30px;flex-shrink:0;
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.06);
+  }
+  .rara-text{font-size:18px;font-weight:600;color:var(--ink);}
+
+  /* Buttons */
+  .btn{
+    border:none;cursor:pointer;
+    font-family:inherit;
+    font-weight:800;
+    border-radius:20px;
+    transition: transform .12s ease, box-shadow .12s ease;
+    box-shadow:var(--shadow);
+  }
+  .btn:active{transform:scale(0.96);}
+  .btn-primary{
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color:#fff;
+    font-size:20px;
+    padding:16px 40px;
+    min-height:60px;
+  }
+  .btn-secondary{
+    background:#fff;color:var(--accent-dark);
+    font-size:18px;padding:14px 30px;min-height:56px;
+    border:2px solid var(--accent-soft);
+  }
+  .btn-round{
+    background:#fff;color:var(--ink-soft);
+    width:56px;height:56px;border-radius:50%;
+    font-size:22px;
+  }
+
+  #navbar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 40px 22px;flex-shrink:0;
+  }
+  #navbar .spacer{width:56px;}
+
+  /* Image choice cards (two big options) */
+  .choice-row{
+    display:flex;gap:28px;justify-content:center;flex-wrap:wrap;
+    width:100%;
+  }
+  .choice-card{
+    background:var(--card-bg);
+    border-radius:var(--radius-lg);
+    padding:14px;
+    width:min(42%, 420px);
+    box-shadow:var(--shadow);
+    border:4px solid transparent;
+    cursor:pointer;
+    transition: transform .15s ease, border-color .15s ease;
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+  }
+  .choice-card:hover{transform:translateY(-4px);}
+  .choice-card.selected{
+    border-color: var(--select-border);
+    background: var(--select);
+  }
+  .choice-card img{
+    width:100%;aspect-ratio: 4/3;object-fit:cover;
+    border-radius:var(--radius-md);
+    background:#f1eefc;
+  }
+  .choice-card .label{
+    font-size:18px;font-weight:700;text-align:center;color:var(--ink);
+  }
+
+  /* feedback box */
+  .feedback-box{
+    background:#fff8ec;border-radius:var(--radius-md);
+    border:2px dashed var(--peach);
+    padding:16px 24px;max-width:820px;
+    font-size:18px;text-align:center;color:var(--ink);
+    min-height:30px;
+    display:none;
+  }
+  .feedback-box.show{display:block;animation: fadein .3s ease;}
+
+  /* grouping activity */
+  .group-zone{
+    display:flex;gap:18px;justify-content:center;flex-wrap:wrap;width:100%;
+  }
+  .category-box{
+    flex:1;min-width:150px;max-width:230px;
+    background:#fff;border-radius:var(--radius-md);
+    padding:14px 10px 18px;
+    box-shadow:var(--shadow);
+    border:3px solid transparent;
+    text-align:center;
+    min-height:150px;
+    transition: border-color .2s ease, background .2s ease;
+  }
+  .category-box .cat-emoji{font-size:34px;}
+  .category-box .cat-name{font-size:17px;font-weight:800;color:var(--accent-dark);margin-top:4px;}
+  .category-box.target-hint{border-color:var(--select-border);background:var(--select);}
+  .category-box .placed{
+    display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px;
+  }
+  .placed .chip{
+    background:var(--mint);border-radius:10px;padding:5px 9px;font-size:13px;font-weight:700;
+  }
+
+  .card-tray{
+    display:flex;gap:14px;flex-wrap:wrap;justify-content:center;width:100%;
+    margin-top:6px;
+  }
+  .flash-card{
+    background:#fff;border-radius:var(--radius-sm);
+    box-shadow:var(--shadow);
+    padding:10px;width:150px;
+    cursor:pointer;border:4px solid transparent;
+    transition: transform .15s ease, border-color .15s ease, opacity .2s ease;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+  }
+  .flash-card img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#f1eefc;}
+  .flash-card .cap{font-size:14px;font-weight:700;text-align:center;}
+  .flash-card.picked{border-color:var(--select-border);background:var(--select);}
+  .flash-card.placed-out{opacity:0.35;pointer-events:none;}
+  .flash-card:hover{transform:translateY(-3px);}
+
+  /* multi select image grid */
+  .grid-select{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(170px,1fr));
+    gap:16px;width:100%;max-width:980px;
+  }
+  .grid-item{
+    background:#fff;border-radius:var(--radius-md);
+    padding:10px;box-shadow:var(--shadow);
+    border:4px solid transparent;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    transition: border-color .15s ease, transform .15s ease;
+  }
+  .grid-item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:12px;background:#f1eefc;}
+  .grid-item .cap{font-size:15px;font-weight:700;text-align:center;}
+  .grid-item.selected{border-color:var(--select-border);background:var(--select);}
+  .grid-item:hover{transform:translateY(-3px);}
+
+  /* order activity */
+  .order-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;width:100%;}
+  .order-slot{
+    width:150px;min-height:150px;border-radius:var(--radius-md);
+    border:3px dashed #cfc9f0;background:#faf9ff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-size:14px;color:#a39fc0;font-weight:700;position:relative;
+  }
+  .order-slot .num-badge{
+    position:absolute;top:-12px;left:-12px;
+    background:var(--accent);color:#fff;
+    width:30px;height:30px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;
+    box-shadow:var(--shadow);
+  }
+  .order-slot img{width:100%;height:100%;object-fit:cover;border-radius:16px;position:absolute;inset:0;}
+  .order-slot.filled{border-style:solid;border-color:var(--select-border);}
+
+  /* words pick */
+  .word-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:10px;}
+  .word-chip{
+    background:#fff;border-radius:26px;padding:18px 34px;
+    font-size:24px;font-weight:800;color:var(--accent-dark);
+    box-shadow:var(--shadow);cursor:pointer;border:4px solid transparent;
+    transition: all .15s ease;
+  }
+  .word-chip.selected{background:var(--select);border-color:var(--select-border);}
+
+  .final-msg{
+    font-size:clamp(22px,3vw,32px);font-weight:900;color:var(--accent-dark);
+    text-align:center;max-width:800px;line-height:1.4;
+  }
+
+  .hint-note{
+    font-size:14px;color:var(--ink-soft);text-align:center;max-width:700px;
+  }
+
+  .stars-earned{
+    font-size:30px;letter-spacing:6px;
+  }
+
+  .cover-illustration{
+    display:flex;gap:14px;justify-content:center;margin:6px 0;
+  }
+  .cover-illustration .mini{
+    width:74px;height:74px;border-radius:18px;background:#fff;
+    box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:34px;
+  }
+
+  /* ---------- RESPONSIVE MOBILE ONLY ----------
+     Desktop/IFP styles above remain unchanged.
+  */
+  @media (max-width: 820px){
+    html,body{
+      height:auto;
+      min-height:100%;
+      overflow-x:hidden;
+      overflow-y:auto;
+    }
+    #app{
+      width:100%;
+      min-height:100vh;
+      height:auto;
+      display:flex;
+      flex-direction:column;
+    }
+    #topbar{
+      padding:8px 10px;
+      gap:6px;
+      flex-wrap:wrap;
+    }
+    #topbar .brand{
+      font-size:14px;
+      gap:6px;
+      white-space:nowrap;
+    }
+    #topbar .brand .dot{width:10px;height:10px;}
+    #progressWrap{
+      order:3;
+      width:100%;
+      justify-content:center;
+      gap:4px;
+      min-width:0;
+      overflow:hidden;
+    }
+    .progress-star{
+      width:22px;height:22px;
+      border-width:2px;
+      font-size:11px;
+      flex:0 0 22px;
+    }
+    #btnHome{
+      padding:8px 11px;
+      font-size:12px;
+      border-radius:12px;
+      margin-left:auto;
+    }
+    #screens{
+      flex:none;
+      position:relative;
+      overflow:visible;
+      width:100%;
+    }
+    .screen{
+      position:relative;
+      inset:auto;
+      width:100%;
+      min-height:0;
+      padding:10px 14px 28px;
+      overflow:visible;
+    }
+    .screen-inner{
+      width:100%;
+      max-width:none;
+      flex:none;
+      gap:12px;
+    }
+    h1.title{
+      font-size:clamp(24px,7vw,32px);
+      line-height:1.15;
+    }
+    p.subtitle{font-size:16px;line-height:1.4;}
+    p.question{font-size:19px;line-height:1.35;}
+    .rara-row{
+      width:100%;
+      padding:10px 13px;
+      border-radius:18px;
+    }
+    .rara-text{font-size:15px;line-height:1.35;}
+    .choice-row{
+      width:100%;
+      flex-direction:column;
+      gap:14px;
+      align-items:stretch;
+    }
+    .choice-card{
+      width:100%;
+      max-width:none;
+      padding:10px;
+      border-width:3px;
+    }
+    .choice-card .label{font-size:16px;line-height:1.3;}
+    .grid-select{
+      grid-template-columns:1fr;
+      gap:12px;
+      max-width:none;
+    }
+    .grid-item{
+      padding:9px;
+      border-width:3px;
+    }
+    .grid-item .cap{font-size:15px;line-height:1.3;}
+    .group-zone{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:10px;
+    }
+    .category-box{
+      min-width:0;
+      max-width:none;
+      min-height:120px;
+      padding:10px 7px 14px;
+    }
+    .category-box .cat-emoji{font-size:28px;}
+    .category-box .cat-name{font-size:14px;}
+    .card-tray{gap:10px;}
+    .flash-card{
+      width:calc(50% - 5px);
+      padding:8px;
+    }
+    .flash-card .cap{font-size:13px;line-height:1.25;}
+    .order-row{gap:8px;}
+    .order-slot{
+      width:calc(33.333% - 6px);
+      min-height:110px;
+    }
+    .word-row{gap:10px;}
+    .word-chip{
+      padding:14px 20px;
+      font-size:20px;
+    }
+    .feedback-box{
+      width:100%;
+      padding:12px 14px;
+      font-size:16px;
+      line-height:1.4;
+    }
+    .btn-next-situasi{
+      display:flex !important;
+      width:100%;
+      min-height:56px;
+      align-items:center;
+      justify-content:center;
+      margin:16px 0 28px !important;
+      position:relative;
+      z-index:2;
+      touch-action:manipulation;
+    }
+    #navbar{
+      position:relative;
+      width:100%;
+      padding:10px 14px calc(18px + env(safe-area-inset-bottom, 0px));
+      background:rgba(255,255,255,.96);
+      border-top:1px solid rgba(92,90,110,.12);
+      z-index:10;
+    }
+    #navbar .btn-round{
+      width:50px;height:50px;
+      flex:0 0 50px;
+      touch-action:manipulation;
+    }
+    .btn{touch-action:manipulation;}
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div id="topbar">
+    <div class="brand"><span class="dot"></span> Misi Detektif Aturan</div>
+    <div id="progressWrap"></div>
+    <button class="btn" id="btnHome" onclick="goToScreen(0)">🏠 Sampul</button>
+  </div>
+
+  <div id="screens"></div>
+
+  <div id="navbar">
+    <button class="btn btn-round" id="btnBack" onclick="prevScreen()">◀</button>
+    <div id="navCenter"></div>
+    <button class="btn btn-round" id="btnNext" onclick="nextScreen()">▶</button>
+  </div>
+
+</div>
+
+<script>
+/* =========================================================
+   DATA — mudah diedit tanpa membongkar seluruh JavaScript
+   Ganti path "..." sesuai asset yang kamu miliki.
+   ========================================================= */
+
+// BAGIAN 2 — Mengamati Situasi
+const dataMengamati = {
+  question: "Coba perhatikan. Apa yang berbeda dari dua gambar ini?",
+  imageA: "03-duduk-tertib.png",
+  imageB: "04-berlari.png",
+  labelA: "Duduk tertib dan memperhatikan guru",
+  labelB: "Berlari-lari di dalam kelas",
+  followUp: "Mana yang membuat belajar lebih nyaman?",
+  feedbackA: "Ya, duduk tertib dan memperhatikan guru membantu kita belajar dengan nyaman.",
+  feedbackB: "Coba pikirkan lagi. Kalau anak-anak berlari di kelas, apa yang mungkin terjadi?",
+  closingAfterPick: "Ternyata cara kita bersikap di kelas bisa membuat belajar terasa berbeda. Yuk, cari tahu manfaat mematuhi aturan!"
+};
+
+// BAGIAN 3 — Manfaat mematuhi aturan
+const dataManfaat = [
+  {
+    question: "Perhatikan dua gambar ini. Apa yang mungkin terjadi?",
+    imageA: "01-antre.png",
+    imageB: "02-berebut.png",
+    labelA: "Menunggu giliran dengan tertib",
+    labelB: "Berebut makanan",
+    feedbackA: "Betul. Kalau kita antre, semua anak mendapat giliran dengan nyaman.",
+    feedbackB: "Coba pikirkan lagi. Kalau semua berebut, apa yang bisa terjadi pada teman kita?"
+  },
+  {
+    question: "Sekarang perhatikan situasi bermain ini.",
+    imageA: "07-bermain-bergiliran.png",
+    imageB: "08-merebut-mainan.png",
+    labelA: "Bermain bergiliran",
+    labelB: "Merebut mainan teman",
+    feedbackA: "Ya, bermain bergiliran membuat semua teman mendapat kesempatan.",
+    feedbackB: "Coba pikirkan lagi. Kalau mainan direbut, bagaimana perasaan teman kita?"
+  }
+];
+const kesimpulanManfaat = "Mematuhi aturan membantu kita melakukan kegiatan dengan lebih teratur, nyaman, dan aman.";
+
+// BAGIAN 4 — Misi Mengelompokkan
+const kategoriTempat = [
+  {id:"rumah", emoji:"🏠", name:"RUMAH"},
+  {id:"sekolah", emoji:"🏫", name:"SEKOLAH"},
+  {id:"makan", emoji:"🍽️", name:"SAAT MAKAN"},
+  {id:"bermain", emoji:"🎲", name:"SAAT BERMAIN"}
+];
+const kartuKelompok = [
+  {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
+  {img:"11-merapikan-mainan.png", label:"Merapikan mainan", target:"rumah"},
+  {img:"03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
+  {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
+  {img:"10-cuci-tangan.png", label:"Mencuci tangan", target:"makan"},
+  {img:"01-antre.png", label:"Antre mengambil makanan", target:"makan"},
+  {img:"07-bermain-bergiliran.png", label:"Bermain bergiliran", target:"bermain"},
+  {img:"13-berbagi-mainan.png", label:"Berbagi mainan", target:"bermain"}
+];
+
+// BAGIAN 5 — Aturan di Rumah
+const dataRumahVs = [
+  {
+    question: "Bandingkan dua situasi ini. Mana yang sebaiknya kita lakukan di rumah?",
+    imageA: "05-merapikan-tempat-tidur.png",
+    imageB: "06-kamar-berantakan.png",
+    labelA: "Merapikan tempat tidur",
+    labelB: "Membiarkan kamar berantakan",
+    feedbackA: "Betul. Merapikan tempat tidur membuat kamar lebih rapi dan nyaman.",
+    feedbackB: "Coba pikirkan lagi. Kalau kamar dibiarkan berantakan, bagaimana rasanya tinggal di sana?"
+  },
+  {
+    question: "Bandingkan lagi. Setelah bermain, mana yang sebaiknya kita lakukan?",
+    imageA: "11-merapikan-mainan.png",
+    imageB: "25-mainan-berantakan.png",
+    labelA: "Merapikan mainan setelah bermain",
+    labelB: "Membiarkan mainan berserakan",
+    feedbackA: "Betul. Merapikan mainan membuat tempat bermain tetap rapi dan nyaman.",
+    feedbackB: "Coba pikirkan lagi. Mainan yang berserakan membuat tempat bermain kurang rapi dan aman."
+  }
+];
+const dataRumah = {
+  question: "Sentuh gambar lain yang menurutmu juga contoh aturan di rumah.",
+  items: [
+    {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", feedback:"Betul, merapikan tempat tidur adalah salah satu aturan di rumah."},
+    {img:"14-menjaga-kebersihan.png", label:"Menjaga kebersihan rumah", feedback:"Betul, menjaga kebersihan adalah aturan yang penting di rumah."},
+    {img:"15-meminta-izin.png", label:"Meminta izin menggunakan barang", feedback:"Ya, meminta izin sebelum memakai barang orang lain juga aturan di rumah."},
+    {img:"26-bermain-gawai.png", label:"Bermain gawai", feedback:"Penggunaan gawai juga perlu mengikuti aturan yang disepakati di rumah."}
+  ],
+  closing: "Sekarang coba sebutkan satu aturan di rumah!"
+};
+
+// BAGIAN 6 — Aturan di Sekolah
+const dataSekolah = {
+  question: "Sentuh gambar yang sebaiknya kita lakukan di sekolah.",
+  items: [
+    {img:"03-duduk-tertib.png", label:"Duduk tertib saat guru menjelaskan", feedback:"Betul, duduk tertib membantu kita belajar dengan nyaman."},
+    {img:"16-berjalan-tertib.png", label:"Berjalan dengan tertib", feedback:"Betul, berjalan tertib membantu menjaga keselamatan diri dan teman."},
+    {img:"17-mendengarkan-teman.png", label:"Mendengarkan teman", feedback:"Ya, mendengarkan teman yang sedang berbicara adalah sikap yang baik."},
+    {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", feedback:"Betul, merapikan alat belajar membuat kegiatan belajar lebih teratur."},
+    {img:"04-berlari.png", label:"Berlari-lari di dalam kelas", feedback:"Coba pikirkan lagi. Apakah berlari di dalam kelas aman?"},
+    {img:"27-mengobrol-saat-guru-menjelaskan.png", label:"Mengobrol saat guru menjelaskan", feedback:"Coba pikirkan lagi. Saat guru menjelaskan, sebaiknya kita memperhatikan."}
+  ],
+  closing: "Coba sebutkan satu aturan di sekolah."
+};
+
+// BAGIAN 7 — Aturan saat Makan
+const dataUrutanMakan = [
+  {img:"10-cuci-tangan.png", label:"Cuci tangan", order:1},
+  {img:"19-duduk-saat-makan.png", label:"Duduk dan makan", order:2},
+  {img:"20-makan-bersama.png", label:"Makan bersama dengan tertib", order:3}
+];
+const dataMakanVs = [
+  {
+    question: "Bandingkan dua situasi ini saat mengambil makanan. Mana yang sesuai aturan?",
+    imageA: "12-antre-makanan.png",
+    imageB: "02-berebut.png",
+    labelA: "Antre mengambil makanan",
+    labelB: "Berebut makanan",
+    feedbackA: "Betul. Antre membuat semua anak mendapat giliran dengan tertib.",
+    feedbackB: "Coba pikirkan lagi. Kalau semua berebut, apa yang bisa terjadi?"
+  },
+  {
+    question: "Bandingkan lagi saat makan. Mana yang sebaiknya kita lakukan?",
+    imageA: "19-duduk-saat-makan.png",
+    imageB: "02-berebut.png",
+    labelA: "Duduk saat makan",
+    labelB: "Berebut makanan",
+    feedbackA: "Betul. Duduk saat makan membantu kita makan dengan tertib dan aman.",
+    feedbackB: "Coba pikirkan lagi. Berebut makanan dapat membuat suasana makan tidak nyaman dan tidak aman."
+  }
+];
+const dataMakanTambahan = {
+  question: "Pilih juga kegiatan lain yang merupakan aturan saat makan.",
+  items: [
+    {img:"21-tidak-berebut.png", label:"Tidak berebut", feedback:"Ya, tidak berebut membuat suasana makan lebih nyaman untuk semua."},
+    {img:"22-merapikan-tempat-makan.png", label:"Merapikan tempat makan", feedback:"Betul, merapikan tempat makan setelah selesai juga aturan saat makan."}
+  ],
+  closing: "Coba sebutkan satu aturan saat makan."
+};
+
+// BAGIAN 8 — Aturan saat Bermain
+const dataBermain = [
+  {
+    question: "Bantu Rara memilih cara bermain yang membuat semua teman nyaman.",
+    imageA: "07-bermain-bergiliran.png",
+    imageB: "08-merebut-mainan.png",
+    labelA: "Bermain bergiliran",
+    labelB: "Merebut mainan",
+    feedbackA: "Bagus. Bermain bergiliran membuat semua teman mendapat kesempatan.",
+    feedbackB: "Coba pikirkan lagi. Bagaimana perasaan teman kalau mainannya direbut?"
+  },
+  {
+    question: "Bagaimana sebaiknya kita bermain setelah selesai?",
+    imageA: "24-mengembalikan-mainan.png",
+    imageB: "25-mainan-berantakan.png",
+    labelA: "Mengembalikan mainan ke tempatnya",
+    labelB: "Membiarkan mainan berserakan",
+    feedbackA: "Betul. Mengembalikan mainan membuat tempat bermain tetap rapi.",
+    feedbackB: "Coba pikirkan lagi. Mainan yang berserakan dapat membuat tempat bermain kurang rapi dan aman."
+  }
+];
+const dataBermainTambahan = {
+  question: "Sentuh juga cara-cara bermain lain yang membuat teman nyaman.",
+  items: [
+    {img:"13-berbagi-mainan.png", label:"Berbagi mainan", feedback:"Betul, berbagi membuat teman ikut senang bermain."},
+    {img:"23-menjaga-teman-aman.png", label:"Menjaga teman tetap aman", feedback:"Ya, menjaga teman tetap aman juga aturan saat bermain."},
+    {img:"08-merebut-mainan.png", label:"Merebut mainan teman", feedback:"Coba pikirkan lagi, apakah itu membuat teman nyaman bermain bersama?"}
+  ],
+  closing: "Coba sebutkan satu aturan saat bermain bersama teman."
+};
+const closingBermain = "Coba sebutkan satu aturan saat bermain bersama teman.";
+
+// BAGIAN 9 — Apa itu Aturan
+const kataAturan = ["TERATUR", "NYAMAN", "AMAN", "BERANTAKAN"];
+const kataBenar = ["TERATUR", "NYAMAN", "AMAN"];
+const kesimpulanAturan = "Jadi, aturan adalah hal yang harus kita lakukan supaya hidup menjadi teratur, nyaman, dan aman.";
+
+// BAGIAN 10 — Tantangan Terakhir
+const kartuReviewRumahSekolah = [
+  // RUMAH — 4 kartu
+  {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
+  {img:"11-merapikan-mainan.png", label:"Merapikan mainan", target:"rumah"},
+  {img:"09-mengangkat-tangan.png", label:"Menyikat gigi sampai bersih", target:"rumah"},
+  {img:"19-duduk-saat-makan.png", label:"Duduk saat makan", target:"rumah"},
+  // SEKOLAH — 4 kartu
+  {img:"03-duduk-tertib.png", label:"Duduk tertib", target:"sekolah"},
+  {img:"15-meminta-izin.png", label:"Meminta izin saat meminjam barang", target:"sekolah"},
+  {img:"17-mendengarkan-teman.png", label:"Mendengarkan teman", target:"sekolah"},
+  {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"}
+];
+const kartuReviewMakanBermain = [
+  // MAKAN — 4 kartu
+  {img:"10-cuci-tangan.png", label:"Mencuci tangan", target:"makan"},
+  {img:"01-antre.png", label:"Antre mengambil makanan", target:"makan"},
+  {img:"20-makan-bersama.png", label:"Makan bersama", target:"makan"},
+  {img:"22-merapikan-tempat-makan.png", label:"Merapikan tempat makan", target:"makan"},
+  // BERMAIN — 4 kartu
+  {img:"07-bermain-bergiliran.png", label:"Bermain bergiliran", target:"bermain"},
+  {img:"13-berbagi-mainan.png", label:"Berbagi mainan", target:"bermain"},
+  {img:"23-menjaga-teman-aman.png", label:"Menjaga teman tetap aman", target:"bermain"},
+  {img:"24-mengembalikan-mainan.png", label:"Mengembalikan mainan", target:"bermain"}
+];
+
+/* =========================================================
+   NAVIGASI & MESIN LAYAR
+   ========================================================= */
+
+// urutan: 0=cover, 1..10 = misi, 11 = penutup
+const MISI_COUNT = 10;
+let currentScreen = 0;
+const progressDone = new Array(MISI_COUNT + 1).fill(false); // index 1..9 dipakai
+
+function buildProgressBar(){
+  const wrap = document.getElementById('progressWrap');
+  wrap.innerHTML = '';
+  for(let i=1;i<=MISI_COUNT;i++){
+    const s = document.createElement('div');
+    s.className = 'progress-star';
+    s.id = 'star-' + i;
+    s.textContent = i;
+    wrap.appendChild(s);
+  }
+}
+
+function refreshProgressBar(){
+  for(let i=1;i<=MISI_COUNT;i++){
+    const el = document.getElementById('star-' + i);
+    if(!el) continue;
+    el.classList.toggle('done', progressDone[i]);
+    el.classList.toggle('current', currentScreen === i);
+  }
+}
+
+function markDone(misiIndex){
+  progressDone[misiIndex] = true;
+  refreshProgressBar();
+}
+
+function goToScreen(index){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('screen-' + index);
+  if(target) target.classList.add('active');
+  currentScreen = index;
+  refreshProgressBar();
+  if(window.matchMedia && window.matchMedia('(max-width: 820px)').matches){
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  const back = document.getElementById('btnBack');
+  const next = document.getElementById('btnNext');
+  back.style.visibility = index === 0 ? 'hidden' : 'visible';
+  next.style.visibility = index === 11 ? 'hidden' : 'visible';
+}
+
+function nextScreen(){
+  if(currentScreen < 11) goToScreen(currentScreen + 1);
+}
+function prevScreen(){
+  if(currentScreen > 0) goToScreen(currentScreen - 1);
+}
+
+/* =========================================================
+   HELPER — komponen aktivitas yang dapat dipakai ulang
+   ========================================================= */
+
+function el(tag, cls, html){
+  const e = document.createElement(tag);
+  if(cls) e.className = cls;
+  if(html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+// Acak urutan pilihan secara fair (Fisher-Yates).
+// Dipakai di semua aktivitas pilihan agar posisi jawaban benar tidak selalu sama.
+function shuffleArray(arr){
+  const copy = [...arr];
+  for(let i = copy.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+// Aktivitas: pilih salah satu dari dua gambar besar (tanpa indikator benar/salah)
+function renderChoiceTwo(container, data, onPicked){
+  container.innerHTML = '';
+  const q = el('p','question', data.question);
+  container.appendChild(q);
+
+  const row = el('div','choice-row');
+  // Acak posisi A/B setiap kali perbandingan ditampilkan, tetapi feedback tetap mengikuti isinya.
+  const choices = shuffleArray([
+    {key:'A', image:data.imageA, label:data.labelA},
+    {key:'B', image:data.imageB, label:data.labelB}
+  ]);
+  const cards = {};
+  choices.forEach(choice => {
+    const card = el('div','choice-card');
+    card.appendChild(el('img')); card.querySelector('img').src = choice.image;
+    card.appendChild(el('div','label', choice.label));
+    cards[choice.key] = card;
+    row.appendChild(card);
+  });
+  const cardA = cards.A;
+  const cardB = cards.B;
+  container.appendChild(row);
+
+  if(data.followUp){
+    container.appendChild(el('p','question', data.followUp));
+  }
+
+  const fb = el('div','feedback-box');
+  container.appendChild(fb);
+
+  let pickedOnce = false;
+  function pick(which){
+    cardA.classList.toggle('selected', which==='A');
+    cardB.classList.toggle('selected', which==='B');
+    fb.textContent = which==='A' ? data.feedbackA : data.feedbackB;
+    fb.classList.add('show');
+    if(!pickedOnce){
+      pickedOnce = true;
+      if(data.closingAfterPick){
+        const rara = el('div','rara-row');
+        rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
+        rara.appendChild(el('div','rara-text', data.closingAfterPick));
+        container.appendChild(rara);
+      }
+    }
+    if(onPicked) onPicked();
+  }
+  cardA.addEventListener('click', () => pick('A'));
+  cardB.addEventListener('click', () => pick('B'));
+}
+
+// Aktivitas: kelompokkan kartu (tap kartu lalu tap kategori tujuan)
+function renderGrouping(container, categories, cards, onProgress){
+  container.innerHTML = '';
+  container.appendChild(el('p','question', 'Sentuh satu kartu, lalu sentuh tempat yang sesuai. Ulangi sampai semua kartu selesai.'));
+
+  const zone = el('div','group-zone');
+  const catBoxes = {};
+  shuffleArray(categories).forEach(cat => {
+    const box = el('div','category-box');
+    box.appendChild(el('div','cat-emoji', cat.emoji));
+    box.appendChild(el('div','cat-name', cat.name));
+    const placed = el('div','placed');
+    box.appendChild(placed);
+    box.dataset.cat = cat.id;
+    zone.appendChild(box);
+    catBoxes[cat.id] = {box, placed};
+  });
+  container.appendChild(zone);
+
+  const tray = el('div','card-tray');
+  container.appendChild(tray);
+
+  const fb = el('div','feedback-box');
+  container.appendChild(fb);
+
+  let selectedCard = null;
+  let placedCount = 0;
+
+  const cardEls = shuffleArray(cards).map((c) => {
+    const card = el('div','flash-card');
+    const img = el('img'); img.src = c.img; card.appendChild(img);
+    card.appendChild(el('div','cap', c.label));
+    card.dataset.target = c.target;
+    tray.appendChild(card);
+
+    card.addEventListener('click', () => {
+      if(card.classList.contains('placed-out')) return;
+      cardEls.forEach(x => x.classList.remove('picked'));
+      card.classList.add('picked');
+      selectedCard = card;
+      fb.classList.remove('show');
+      Object.values(catBoxes).forEach(cb => cb.box.classList.remove('target-hint'));
+    });
+    return card;
+  });
+
+  Object.entries(catBoxes).forEach(([id, cb]) => {
+    cb.box.addEventListener('click', () => {
+      if(!selectedCard) {
+        fb.textContent = 'Pilih dulu satu kartu, ya!';
+        fb.classList.add('show');
+        return;
+      }
+      const chip = el('div','chip', selectedCard.querySelector('.cap').textContent);
+      cb.placed.appendChild(chip);
+      const isRight = selectedCard.dataset.target === id;
+      fb.textContent = isRight
+        ? 'Bagus. Itu memang salah satu contoh aturan di sana.'
+        : 'Coba pikirkan lagi. Menurutmu, kegiatan itu biasanya dilakukan di mana?';
+      fb.classList.add('show');
+      if(isRight){
+        selectedCard.classList.add('placed-out');
+        placedCount++;
+        if(onProgress) onProgress(placedCount, cards.length);
+      }
+      selectedCard.classList.remove('picked');
+      selectedCard = null;
+      cb.box.classList.remove('target-hint');
+    });
+  });
+
+  return {getPlacedCount: () => placedCount};
+}
+
+// Aktivitas: pilih beberapa gambar yang sesuai (multi-select, tanpa indikator benar/salah)
+function renderMultiSelect(container, data, onSelect){
+  container.innerHTML = '';
+  container.appendChild(el('p','question', data.question));
+  const grid = el('div','grid-select');
+  const fb = el('div','feedback-box');
+  let closingShown = false;
+  shuffleArray(data.items).forEach(item => {
+    const card = el('div','grid-item');
+    const img = el('img'); img.src = item.img; card.appendChild(img);
+    card.appendChild(el('div','cap', item.label));
+    card.addEventListener('click', () => {
+      card.classList.toggle('selected');
+      const nowSelected = card.classList.contains('selected');
+      if(nowSelected && item.feedback){
+        fb.textContent = item.feedback;
+        fb.classList.add('show');
+      }
+      const selectedCount = grid.querySelectorAll('.grid-item.selected').length;
+      if(selectedCount > 0 && !closingShown && data.closing){
+        closingShown = true;
+        const rara = el('div','rara-row');
+        rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
+        rara.appendChild(el('div','rara-text', data.closing));
+        container.appendChild(rara);
+      }
+      if(onSelect) onSelect();
+    });
+    grid.appendChild(card);
+  });
+  container.appendChild(grid);
+  container.appendChild(fb);
+}
+
+// Rangkaian beberapa perbandingan (misi 2, 4, 6 & 7) — guru menekan tombol
+// "Lanjut" sendiri setelah selesai berdiskusi, tidak otomatis pindah.
+function renderChoiceSequence(container, items, closingText, onAllDone){
+  let step = 0;
+  function renderStep(){
+    container.innerHTML = '';
+    if(step < items.length){
+      const stepWrap = el('div');
+      container.appendChild(stepWrap);
+      renderChoiceTwo(stepWrap, items[step], () => {
+        if(!stepWrap.querySelector('.btn-next-situasi')){
+          const isLast = step === items.length - 1;
+          const nextBtn = el('button','btn btn-secondary btn-next-situasi',
+            isLast ? 'Lanjut ✅' : 'Lanjut ke situasi berikutnya ➡️');
+          nextBtn.style.marginTop = '4px';
+          nextBtn.onclick = () => { step++; renderStep(); };
+          stepWrap.appendChild(nextBtn);
+        }
+      });
+    } else {
+      if(closingText){
+        container.appendChild(el('div','rara-row',
+          '<div class="rara-avatar">🙋‍♀️</div><div class="rara-text">' + closingText + '</div>'));
+      }
+      if(onAllDone) onAllDone();
+    }
+  }
+  renderStep();
+}
+
+// Aktivitas: urutkan dengan tap (tap kartu sesuai urutan 1,2,3)
+function renderOrdering(container, steps, onDone){
+  container.innerHTML = '';
+  container.appendChild(el('p','question','Sentuh kartu sesuai urutan kegiatan sebelum makan.'));
+
+  const slots = [];
+  const slotRow = el('div','order-row');
+  for(let i=1;i<=steps.length;i++){
+    const slot = el('div','order-slot');
+    slot.appendChild(el('div','num-badge', i));
+    slot.appendChild(document.createTextNode('Urutan ke-' + i));
+    slotRow.appendChild(slot);
+    slots.push(slot);
+  }
+  container.appendChild(slotRow);
+
+  const tray = el('div','card-tray');
+  const shuffled = shuffleArray(steps);
+  const fb = el('div','feedback-box');
+
+  let nextExpected = 1;
+  let doneCount = 0;
+
+  shuffled.forEach(step => {
+    const card = el('div','flash-card');
+    const img = el('img'); img.src = step.img; card.appendChild(img);
+    card.appendChild(el('div','cap', step.label));
+    card.addEventListener('click', () => {
+      if(card.classList.contains('placed-out')) return;
+      if(step.order === nextExpected){
+        const slot = slots[nextExpected - 1];
+        slot.innerHTML = '';
+        slot.classList.add('filled');
+        const img2 = el('img'); img2.src = step.img; slot.appendChild(img2);
+        slot.appendChild(el('div','num-badge', nextExpected));
+        card.classList.add('placed-out');
+        fb.textContent = 'Betul, langkah itu berada di urutan ke-' + nextExpected + '.';
+        fb.classList.add('show');
+        nextExpected++;
+        doneCount++;
+        if(doneCount === steps.length && onDone) onDone();
+      } else {
+        fb.textContent = 'Coba lihat lagi urutan yang sudah tersusun. Kira-kira ini giliran langkah yang mana?';
+        fb.classList.add('show');
+      }
+    });
+    tray.appendChild(card);
+  });
+
+  container.appendChild(tray);
+  container.appendChild(fb);
+}
+
+// Aktivitas: pilih kata yang berhubungan
+function renderWordPick(container, words, correctWords, onProgress){
+  container.innerHTML = '';
+  container.appendChild(el('p','question','Sentuh kata yang menurutmu berhubungan dengan aturan.'));
+  const row = el('div','word-row');
+  const fb = el('div','feedback-box');
+  shuffleArray(words).forEach(w => {
+    const chip = el('div','word-chip', w);
+    chip.addEventListener('click', () => {
+      chip.classList.toggle('selected');
+      fb.textContent = correctWords.includes(w)
+        ? 'Ya, ' + w.toLowerCase() + ' berhubungan dengan aturan.'
+        : 'Coba pikirkan lagi, apakah kata itu berhubungan dengan aturan?';
+      fb.classList.add('show');
+      if(onProgress) onProgress();
+    });
+    row.appendChild(chip);
+  });
+  container.appendChild(row);
+  container.appendChild(fb);
+}
+
+/* =========================================================
+   MEMBANGUN SETIAP LAYAR
+   ========================================================= */
+
+const screensRoot = document.getElementById('screens');
+
+function makeScreen(id){
+  const s = el('div','screen');
+  s.id = 'screen-' + id;
+  screensRoot.appendChild(s);
+  const inner = el('div','screen-inner');
+  s.appendChild(inner);
+  return inner;
+}
+
+/* ---- Layar 0: Sampul / Pembuka ---- */
+(function buildCover(){
+  const inner = makeScreen(0);
+  inner.appendChild(el('h1','title','YUK, KENALI ATURAN!'));
+  const rara = el('div','rara-row');
+  rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
+  rara.appendChild(el('div','rara-text','Halo! Aku Rara. Hari ini kita akan mencari tahu tentang aturan. Yuk, kita mulai!'));
+  inner.appendChild(rara);
+  inner.appendChild(el('p','question','Menurutmu, mengapa kita membutuhkan aturan?'));
+  const illus = el('div','cover-illustration');
+  ['🏠','🏫','🍽️','🎲'].forEach(e => {
+    const box = el('div','mini', e);
+    illus.appendChild(box);
+  });
+  inner.appendChild(illus);
+  inner.appendChild(el('p','subtitle','Ayo bantu Rara menjadi Detektif Aturan! Sentuh tombol di bawah untuk memulai misi.'));
+  const startBtn = el('button','btn btn-primary','MULAI MISI 🔎');
+  startBtn.onclick = () => goToScreen(1);
+  inner.appendChild(startBtn);
+})();
+
+/* ---- Layar 1 (Misi 1): Mengamati Situasi ---- */
+(function buildMisi1(){
+  const inner = makeScreen(1);
+  inner.appendChild(el('h1','title','Misi 1: Mengamati Situasi'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+  renderChoiceTwo(body, dataMengamati, () => markDone(1));
+})();
+
+/* ---- Layar 2 (Misi 2): Manfaat Mematuhi Aturan ---- */
+(function buildMisi2(){
+  const inner = makeScreen(2);
+  inner.appendChild(el('h1','title','Misi 2: Manfaat Mematuhi Aturan'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+  renderChoiceSequence(body, dataManfaat, kesimpulanManfaat, () => markDone(2));
+})();
+
+/* ---- Layar 3 (Misi 3): Misi Mengelompokkan ---- */
+(function buildMisi3(){
+  const inner = makeScreen(3);
+  inner.appendChild(el('h1','title','Misi 3: Di Mana Aturan Ini Dilakukan?'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+  renderGrouping(body, kategoriTempat, kartuKelompok, (placed, total) => {
+    if(placed >= Math.min(6, total)) markDone(3);
+  });
+})();
+
+/* ---- Layar 4 (Misi 4): Aturan di Rumah ---- */
+(function buildMisi4(){
+  const inner = makeScreen(4);
+  inner.appendChild(el('h1','title','Misi 4: 🏠 Aturan di Rumah'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+
+  const vsWrap = el('div');
+  body.appendChild(vsWrap);
+  renderChoiceSequence(vsWrap, dataRumahVs, '', () => {
+    const done = el('div','rara-row');
+    done.appendChild(el('div','rara-avatar','🙋‍♀️'));
+    done.appendChild(el('div','rara-text','Bagus! Dari dua perbandingan tadi, kita bisa melihat bahwa aturan di rumah membantu menjaga rumah tetap rapi dan nyaman.'));
+    body.appendChild(done);
+    markDone(4);
+  });
+})();
+
+/* ---- Layar 5 (Misi 5): Aturan di Sekolah ---- */
+(function buildMisi5(){
+  const inner = makeScreen(5);
+  inner.appendChild(el('h1','title','Misi 5: 🏫 Aturan di Sekolah'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+  renderMultiSelect(body, dataSekolah, () => markDone(5));
+})();
+
+/* ---- Layar 6 (Misi 6): Aturan saat Makan ---- */
+(function buildMisi6(){
+  const inner = makeScreen(6);
+  inner.appendChild(el('h1','title','Misi 6: 🍽️ Aturan saat Makan'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+
+  const orderWrap = el('div');
+  body.appendChild(orderWrap);
+  renderOrdering(orderWrap, dataUrutanMakan, () => {
+    setTimeout(() => {
+      orderWrap.innerHTML = '';
+      const vsWrap = el('div');
+      body.appendChild(vsWrap);
+      renderChoiceSequence(vsWrap, dataMakanVs, '', () => {
+        const done = el('div','rara-row');
+        done.appendChild(el('div','rara-avatar','🙋‍♀️'));
+        done.appendChild(el('div','rara-text','Bagus! Saat makan, kita perlu mengikuti aturan agar kegiatan berlangsung tertib, nyaman, dan aman.'));
+        body.appendChild(done);
+        markDone(6);
+      });
+    }, 600);
+  });
+})();
+
+/* ---- Layar 7 (Misi 7): Aturan saat Bermain ---- */
+(function buildMisi7(){
+  const inner = makeScreen(7);
+  inner.appendChild(el('h1','title','Misi 7: 🎲 Aturan saat Bermain'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+
+  const seqWrap = el('div');
+  body.appendChild(seqWrap);
+  renderChoiceSequence(seqWrap, dataBermain, '', () => {
+    seqWrap.innerHTML = '';
+    const multiWrap = el('div');
+    body.appendChild(multiWrap);
+    renderMultiSelect(multiWrap, dataBermainTambahan, () => markDone(7));
+  });
+})();
+
+/* ---- Layar 8 (Misi 8): Apa itu Aturan? ---- */
+(function buildMisi8(){
+  const inner = makeScreen(8);
+  inner.appendChild(el('h1','title','Misi 8: Apa Itu Aturan?'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+
+  body.appendChild(el('p','subtitle','Kita sudah melihat banyak contoh. Menurutmu, apa itu aturan?'));
+  const wordArea = el('div');
+  body.appendChild(wordArea);
+
+  let selectedCount = 0;
+  renderWordPick(wordArea, kataAturan, kataBenar, () => {
+    selectedCount++;
+    if(selectedCount >= 3 && !document.getElementById('kesimpulan-aturan')){
+      const box = el('div','final-msg', kesimpulanAturan);
+      box.id = 'kesimpulan-aturan';
+      body.appendChild(box);
+      markDone(8);
+    }
+  });
+})();
+
+/* ---- Layar 9 (Misi 9): Uji Ingatanmu — Rumah & Sekolah ---- */
+(function buildMisi9(){
+  const inner = makeScreen(9);
+  inner.appendChild(el('h1','title','Misi 9: Uji Ingatanmu 🧠'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+  const kategoriReviewRS = kategoriTempat.filter(cat => cat.id === 'rumah' || cat.id === 'sekolah');
+  body.appendChild(el('p','subtitle','Ada 8 kartu! Temukan mana yang termasuk aturan di rumah dan mana yang termasuk aturan di sekolah.'));
+  renderGrouping(body, kategoriReviewRS, kartuReviewRumahSekolah, (placed, total) => {
+    if(placed >= total) markDone(9);
+  });
+})();
+
+/* ---- Layar 10 (Misi 10): Uji Ingatanmu — Makan & Bermain ---- */
+(function buildMisi10(){
+  const inner = makeScreen(10);
+  inner.appendChild(el('h1','title','Misi 10: Uji Ingatanmu 🧠'));
+  const body = el('div','screen-inner');
+  inner.appendChild(body);
+  const kategoriReviewMB = kategoriTempat.filter(cat => cat.id === 'makan' || cat.id === 'bermain');
+  body.appendChild(el('p','subtitle','Ada 8 kartu! Temukan mana yang termasuk aturan saat makan dan mana yang termasuk aturan saat bermain.'));
+  renderGrouping(body, kategoriReviewMB, kartuReviewMakanBermain, (placed, total) => {
+    if(placed >= total) markDone(10);
+  });
+})();
+
+/* ---- Layar 11: Penutup ---- */
+(function buildPenutup(){
+  const inner = makeScreen(11);
+  inner.appendChild(el('h1','title','Misi Selesai! 🎉'));
+  const rara = el('div','rara-row');
+  rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
+  rara.appendChild(el('div','rara-text','Kerja bagus, Detektif Aturan! Kalian sudah menemukan banyak contoh aturan di rumah, sekolah, saat makan, dan saat bermain.'));
+  inner.appendChild(rara);
+  inner.appendChild(el('div','final-msg', kesimpulanAturan));
+  inner.appendChild(el('p','subtitle','Sekarang, ayo lanjutkan dengan bermain peran bersama teman-teman!'));
+  const illus = el('div','cover-illustration');
+  ['🏠','🏫','🍽️','🎲','⭐'].forEach(e => illus.appendChild(el('div','mini', e)));
+  inner.appendChild(illus);
+})();
+
+/* =========================================================
+   INISIALISASI
+   ========================================================= */
+buildProgressBar();
+goToScreen(0);
+</script>
+</body>
+</html>
