@@ -511,213 +511,172 @@
 <script>
 /* =========================================================
    DATA — mudah diedit tanpa membongkar seluruh JavaScript
-   Ganti path "..." sesuai asset yang kamu miliki.
+   Ganti path "images/..." sesuai asset yang kamu miliki.
    ========================================================= */
 
-// BAGIAN 2 — Mengamati Situasi
-const dataMengamati = {
-  question: "Coba perhatikan. Apa yang berbeda dari dua gambar ini?",
-  imageA: "03-duduk-tertib.png",
-  imageB: "04-berlari.png",
-  labelA: "Duduk tertib dan memperhatikan guru",
-  labelB: "Berlari-lari di dalam kelas",
-  followUp: "Mana yang membuat belajar lebih nyaman?",
-  feedbackA: "Ya, duduk tertib dan memperhatikan guru membantu kita belajar dengan nyaman.",
-  feedbackB: "Coba pikirkan lagi. Kalau anak-anak berlari di kelas, apa yang mungkin terjadi?",
-  closingAfterPick: "Ternyata cara kita bersikap di kelas bisa membuat belajar terasa berbeda. Yuk, cari tahu manfaat mematuhi aturan!"
+// Misi 1 — Kenali aturan lewat situasi kontras
+const dataMisi1 = {
+  question: "Perhatikan dua situasi ini. Mana yang sesuai aturan di sekolah?",
+  imageA: "images/03-duduk-tertib.png",
+  imageB: "images/04-berlari.png",
+  labelA: "Duduk tertib saat belajar",
+  labelB: "Berlari di dalam kelas",
+  feedbackA: "Betul. Duduk tertib membantu kegiatan belajar berjalan nyaman dan aman.",
+  feedbackB: "Coba pikirkan lagi. Berlari di dalam kelas bisa membuat diri sendiri dan teman kurang aman.",
+  closingAfterPick: "Bagus! Kamu sudah mulai menemukan perilaku yang sesuai aturan."
 };
 
-// BAGIAN 3 — Manfaat mematuhi aturan
-const dataManfaat = [
+const kategoriRumahSekolah = [
+  {id:"rumah", emoji:"🏠", name:"RUMAH"},
+  {id:"sekolah", emoji:"🏫", name:"SEKOLAH"}
+];
+const kartuRumahSekolah = [
+  {img:"images/05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
+  {img:"images/06-kamar-berantakan.png", label:"Membiarkan kamar berantakan", target:"rumah"},
+  {img:"images/11-merapikan-mainan.png", label:"Merapikan mainan", target:"rumah"},
+  {img:"images/10-cuci-tangan.png", label:"Mencuci tangan sebelum makan", target:"rumah"},
+  {img:"images/03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
+  {img:"images/17-mendengarkan-teman.png", label:"Mendengarkan teman", target:"sekolah"},
+  {img:"images/18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
+  {img:"images/16-berjalan-tertib.png", label:"Berjalan dengan tertib", target:"sekolah"}
+];
+
+const dataMisi3 = [
   {
-    question: "Perhatikan dua gambar ini. Apa yang mungkin terjadi?",
-    imageA: "01-antre.png",
-    imageB: "02-berebut.png",
-    labelA: "Menunggu giliran dengan tertib",
-    labelB: "Berebut makanan",
-    feedbackA: "Betul. Kalau kita antre, semua anak mendapat giliran dengan nyaman.",
-    feedbackB: "Coba pikirkan lagi. Kalau semua berebut, apa yang bisa terjadi pada teman kita?"
+    question: "Bandingkan dua situasi ini di rumah. Mana yang sebaiknya kita lakukan?",
+    imageA: "images/05-merapikan-tempat-tidur.png",
+    imageB: "images/06-kamar-berantakan.png",
+    labelA: "Merapikan tempat tidur",
+    labelB: "Membiarkan kamar berantakan",
+    feedbackA: "Betul. Merapikan tempat tidur membuat kamar lebih rapi dan nyaman.",
+    feedbackB: "Coba pikirkan lagi. Kamar yang berantakan membuat rumah kurang rapi dan nyaman."
   },
   {
-    question: "Sekarang perhatikan situasi bermain ini.",
-    imageA: "07-bermain-bergiliran.png",
-    imageB: "08-merebut-mainan.png",
-    labelA: "Bermain bergiliran",
-    labelB: "Merebut mainan teman",
-    feedbackA: "Ya, bermain bergiliran membuat semua teman mendapat kesempatan.",
-    feedbackB: "Coba pikirkan lagi. Kalau mainan direbut, bagaimana perasaan teman kita?"
+    question: "Setelah bermain, mana yang lebih sesuai aturan?",
+    imageA: "images/11-merapikan-mainan.png",
+    imageB: "images/25-mainan-berantakan.png",
+    labelA: "Merapikan mainan setelah bermain",
+    labelB: "Membiarkan mainan berserakan",
+    feedbackA: "Betul. Merapikan mainan membuat tempat bermain tetap rapi dan nyaman.",
+    feedbackB: "Coba pikirkan lagi. Mainan yang berserakan dapat membuat tempat bermain kurang rapi dan aman."
   }
 ];
-const kesimpulanManfaat = "Mematuhi aturan membantu kita melakukan kegiatan dengan lebih teratur, nyaman, dan aman.";
 
-// BAGIAN 4 — Misi Mengelompokkan
-const kategoriTempat = [
+const kategoriBolehTidak = [
+  {id:"boleh", emoji:"👍", name:"BOLEH"},
+  {id:"tidak", emoji:"🚫", name:"TIDAK BOLEH"}
+];
+const kartuBolehTidak = [
+  {img:"images/14-menjaga-kebersihan.png", label:"Menjaga kebersihan", target:"boleh"},
+  {img:"images/26-bermain-gawai.png", label:"Bermain gawai tanpa mengikuti aturan", target:"tidak"},
+  {img:"images/15-meminta-izin.png", label:"Meminta izin sebelum memakai barang", target:"boleh"},
+  {img:"images/04-berlari.png", label:"Berlari di dalam kelas", target:"tidak"},
+  {img:"images/21-tidak-berebut.png", label:"Tidak berebut", target:"boleh"},
+  {img:"images/27-mengobrol-saat-guru-menjelaskan.png", label:"Mengobrol saat guru menjelaskan", target:"tidak"},
+  {img:"images/24-mengembalikan-mainan.png", label:"Mengembalikan mainan ke tempatnya", target:"boleh"},
+  {img:"images/08-merebut-mainan.png", label:"Merebut mainan teman", target:"tidak"}
+];
+
+const dataMisi5 = [
+  {img:"images/10-cuci-tangan.png", label:"Cuci tangan", order:1},
+  {img:"images/19-duduk-saat-makan.png", label:"Duduk dan makan", order:2},
+  {img:"images/20-makan-bersama.png", label:"Makan bersama dengan tertib", order:3}
+];
+
+const dataMisi6 = [
+  {
+    question: "Temanmu sedang berbicara. Apa yang sebaiknya kamu lakukan?",
+    imageA: "images/17-mendengarkan-teman.png",
+    imageB: "images/27-mengobrol-saat-guru-menjelaskan.png",
+    labelA: "Mendengarkan dengan baik",
+    labelB: "Mengobrol sendiri",
+    feedbackA: "Betul. Mendengarkan orang yang sedang berbicara menunjukkan sikap tertib dan menghargai teman.",
+    feedbackB: "Coba pikirkan lagi. Saat orang lain berbicara, sebaiknya kita mendengarkan."
+  },
+  {
+    question: "Kamu selesai bermain. Apa yang sebaiknya kamu lakukan?",
+    imageA: "images/24-mengembalikan-mainan.png",
+    imageB: "images/25-mainan-berantakan.png",
+    labelA: "Mengembalikan mainan ke tempatnya",
+    labelB: "Meninggalkan mainan berserakan",
+    feedbackA: "Betul. Mengembalikan mainan membuat tempat bermain tetap rapi.",
+    feedbackB: "Coba pikirkan lagi. Setelah bermain, sebaiknya kita merapikan kembali mainan."
+  },
+  {
+    question: "Saat mengambil makanan bersama teman, apa yang sebaiknya kamu lakukan?",
+    imageA: "images/12-antre-makanan.png",
+    imageB: "images/02-berebut.png",
+    labelA: "Antre menunggu giliran",
+    labelB: "Berebut makanan",
+    feedbackA: "Betul. Antre membuat semua orang mendapat giliran dengan tertib.",
+    feedbackB: "Coba pikirkan lagi. Berebut dapat membuat suasana makan tidak nyaman dan tidak aman."
+  }
+];
+
+const dataMisi7 = [
+  {
+    question: "Lihat situasi ini. Apa yang sebaiknya dilakukan?",
+    imageA: "images/06-kamar-berantakan.png",
+    imageB: "images/05-merapikan-tempat-tidur.png",
+    labelA: "Membiarkan kamar berantakan",
+    labelB: "Merapikan kamar",
+    feedbackA: "Coba pikirkan lagi. Kamar yang berantakan perlu dirapikan.",
+    feedbackB: "Betul. Merapikan kamar membuat tempat tinggal lebih rapi dan nyaman."
+  },
+  {
+    question: "Ada mainan yang berserakan. Apa yang sebaiknya dilakukan?",
+    imageA: "images/25-mainan-berantakan.png",
+    imageB: "images/24-mengembalikan-mainan.png",
+    labelA: "Membiarkan mainan berserakan",
+    labelB: "Mengembalikan mainan ke tempatnya",
+    feedbackA: "Coba pikirkan lagi. Mainan yang berserakan sebaiknya dirapikan.",
+    feedbackB: "Betul. Mengembalikan mainan membuat tempat bermain lebih rapi dan aman."
+  },
+  {
+    question: "Ada anak berlari di dalam kelas. Apa yang sebaiknya dilakukan?",
+    imageA: "images/04-berlari.png",
+    imageB: "images/16-berjalan-tertib.png",
+    labelA: "Tetap berlari di kelas",
+    labelB: "Berjalan dengan tertib",
+    feedbackA: "Coba pikirkan lagi. Berlari di dalam kelas kurang aman.",
+    feedbackB: "Betul. Berjalan dengan tertib membantu menjaga keselamatan."
+  },
+  {
+    question: "Guru sedang menjelaskan. Apa yang sebaiknya dilakukan?",
+    imageA: "images/27-mengobrol-saat-guru-menjelaskan.png",
+    imageB: "images/03-duduk-tertib.png",
+    labelA: "Mengobrol sendiri",
+    labelB: "Duduk tertib dan memperhatikan",
+    feedbackA: "Coba pikirkan lagi. Saat guru menjelaskan, sebaiknya kita memperhatikan.",
+    feedbackB: "Betul. Duduk tertib dan memperhatikan membantu kegiatan belajar berjalan nyaman."
+  }
+];
+
+const kategoriFinal = [
   {id:"rumah", emoji:"🏠", name:"RUMAH"},
   {id:"sekolah", emoji:"🏫", name:"SEKOLAH"},
   {id:"makan", emoji:"🍽️", name:"SAAT MAKAN"},
   {id:"bermain", emoji:"🎲", name:"SAAT BERMAIN"}
 ];
-const kartuKelompok = [
-  {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
-  {img:"11-merapikan-mainan.png", label:"Merapikan mainan", target:"rumah"},
-  {img:"03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
-  {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
-  {img:"10-cuci-tangan.png", label:"Mencuci tangan", target:"makan"},
-  {img:"01-antre.png", label:"Antre mengambil makanan", target:"makan"},
-  {img:"07-bermain-bergiliran.png", label:"Bermain bergiliran", target:"bermain"},
-  {img:"13-berbagi-mainan.png", label:"Berbagi mainan", target:"bermain"}
+const kartuFinal = [
+  {img:"images/05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
+  {img:"images/15-meminta-izin.png", label:"Meminta izin", target:"rumah"},
+  {img:"images/03-duduk-tertib.png", label:"Duduk tertib saat belajar", target:"sekolah"},
+  {img:"images/18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"},
+  {img:"images/12-antre-makanan.png", label:"Antre mengambil makanan", target:"makan"},
+  {img:"images/19-duduk-saat-makan.png", label:"Duduk saat makan", target:"makan"},
+  {img:"images/07-bermain-bergiliran.png", label:"Bermain bergiliran", target:"bermain"},
+  {img:"images/24-mengembalikan-mainan.png", label:"Mengembalikan mainan", target:"bermain"}
 ];
 
-// BAGIAN 5 — Aturan di Rumah
-const dataRumahVs = [
-  {
-    question: "Bandingkan dua situasi ini. Mana yang sebaiknya kita lakukan di rumah?",
-    imageA: "05-merapikan-tempat-tidur.png",
-    imageB: "06-kamar-berantakan.png",
-    labelA: "Merapikan tempat tidur",
-    labelB: "Membiarkan kamar berantakan",
-    feedbackA: "Betul. Merapikan tempat tidur membuat kamar lebih rapi dan nyaman.",
-    feedbackB: "Coba pikirkan lagi. Kalau kamar dibiarkan berantakan, bagaimana rasanya tinggal di sana?"
-  },
-  {
-    question: "Bandingkan lagi. Setelah bermain, mana yang sebaiknya kita lakukan?",
-    imageA: "11-merapikan-mainan.png",
-    imageB: "25-mainan-berantakan.png",
-    labelA: "Merapikan mainan setelah bermain",
-    labelB: "Membiarkan mainan berserakan",
-    feedbackA: "Betul. Merapikan mainan membuat tempat bermain tetap rapi dan nyaman.",
-    feedbackB: "Coba pikirkan lagi. Mainan yang berserakan membuat tempat bermain kurang rapi dan aman."
-  }
-];
-const dataRumah = {
-  question: "Sentuh gambar lain yang menurutmu juga contoh aturan di rumah.",
-  items: [
-    {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", feedback:"Betul, merapikan tempat tidur adalah salah satu aturan di rumah."},
-    {img:"14-menjaga-kebersihan.png", label:"Menjaga kebersihan rumah", feedback:"Betul, menjaga kebersihan adalah aturan yang penting di rumah."},
-    {img:"15-meminta-izin.png", label:"Meminta izin menggunakan barang", feedback:"Ya, meminta izin sebelum memakai barang orang lain juga aturan di rumah."},
-    {img:"26-bermain-gawai.png", label:"Bermain gawai", feedback:"Penggunaan gawai juga perlu mengikuti aturan yang disepakati di rumah."}
-  ],
-  closing: "Sekarang coba sebutkan satu aturan di rumah!"
-};
-
-// BAGIAN 6 — Aturan di Sekolah
-const dataSekolah = {
-  question: "Sentuh gambar yang sebaiknya kita lakukan di sekolah.",
-  items: [
-    {img:"03-duduk-tertib.png", label:"Duduk tertib saat guru menjelaskan", feedback:"Betul, duduk tertib membantu kita belajar dengan nyaman."},
-    {img:"16-berjalan-tertib.png", label:"Berjalan dengan tertib", feedback:"Betul, berjalan tertib membantu menjaga keselamatan diri dan teman."},
-    {img:"17-mendengarkan-teman.png", label:"Mendengarkan teman", feedback:"Ya, mendengarkan teman yang sedang berbicara adalah sikap yang baik."},
-    {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", feedback:"Betul, merapikan alat belajar membuat kegiatan belajar lebih teratur."},
-    {img:"04-berlari.png", label:"Berlari-lari di dalam kelas", feedback:"Coba pikirkan lagi. Apakah berlari di dalam kelas aman?"},
-    {img:"27-mengobrol-saat-guru-menjelaskan.png", label:"Mengobrol saat guru menjelaskan", feedback:"Coba pikirkan lagi. Saat guru menjelaskan, sebaiknya kita memperhatikan."}
-  ],
-  closing: "Coba sebutkan satu aturan di sekolah."
-};
-
-// BAGIAN 7 — Aturan saat Makan
-const dataUrutanMakan = [
-  {img:"10-cuci-tangan.png", label:"Cuci tangan", order:1},
-  {img:"19-duduk-saat-makan.png", label:"Duduk dan makan", order:2},
-  {img:"20-makan-bersama.png", label:"Makan bersama dengan tertib", order:3}
-];
-const dataMakanVs = [
-  {
-    question: "Bandingkan dua situasi ini saat mengambil makanan. Mana yang sesuai aturan?",
-    imageA: "12-antre-makanan.png",
-    imageB: "02-berebut.png",
-    labelA: "Antre mengambil makanan",
-    labelB: "Berebut makanan",
-    feedbackA: "Betul. Antre membuat semua anak mendapat giliran dengan tertib.",
-    feedbackB: "Coba pikirkan lagi. Kalau semua berebut, apa yang bisa terjadi?"
-  },
-  {
-    question: "Bandingkan lagi saat makan. Mana yang sebaiknya kita lakukan?",
-    imageA: "19-duduk-saat-makan.png",
-    imageB: "02-berebut.png",
-    labelA: "Duduk saat makan",
-    labelB: "Berebut makanan",
-    feedbackA: "Betul. Duduk saat makan membantu kita makan dengan tertib dan aman.",
-    feedbackB: "Coba pikirkan lagi. Berebut makanan dapat membuat suasana makan tidak nyaman dan tidak aman."
-  }
-];
-const dataMakanTambahan = {
-  question: "Pilih juga kegiatan lain yang merupakan aturan saat makan.",
-  items: [
-    {img:"21-tidak-berebut.png", label:"Tidak berebut", feedback:"Ya, tidak berebut membuat suasana makan lebih nyaman untuk semua."},
-    {img:"22-merapikan-tempat-makan.png", label:"Merapikan tempat makan", feedback:"Betul, merapikan tempat makan setelah selesai juga aturan saat makan."}
-  ],
-  closing: "Coba sebutkan satu aturan saat makan."
-};
-
-// BAGIAN 8 — Aturan saat Bermain
-const dataBermain = [
-  {
-    question: "Bantu Rara memilih cara bermain yang membuat semua teman nyaman.",
-    imageA: "07-bermain-bergiliran.png",
-    imageB: "08-merebut-mainan.png",
-    labelA: "Bermain bergiliran",
-    labelB: "Merebut mainan",
-    feedbackA: "Bagus. Bermain bergiliran membuat semua teman mendapat kesempatan.",
-    feedbackB: "Coba pikirkan lagi. Bagaimana perasaan teman kalau mainannya direbut?"
-  },
-  {
-    question: "Bagaimana sebaiknya kita bermain setelah selesai?",
-    imageA: "24-mengembalikan-mainan.png",
-    imageB: "25-mainan-berantakan.png",
-    labelA: "Mengembalikan mainan ke tempatnya",
-    labelB: "Membiarkan mainan berserakan",
-    feedbackA: "Betul. Mengembalikan mainan membuat tempat bermain tetap rapi.",
-    feedbackB: "Coba pikirkan lagi. Mainan yang berserakan dapat membuat tempat bermain kurang rapi dan aman."
-  }
-];
-const dataBermainTambahan = {
-  question: "Sentuh juga cara-cara bermain lain yang membuat teman nyaman.",
-  items: [
-    {img:"13-berbagi-mainan.png", label:"Berbagi mainan", feedback:"Betul, berbagi membuat teman ikut senang bermain."},
-    {img:"23-menjaga-teman-aman.png", label:"Menjaga teman tetap aman", feedback:"Ya, menjaga teman tetap aman juga aturan saat bermain."},
-    {img:"08-merebut-mainan.png", label:"Merebut mainan teman", feedback:"Coba pikirkan lagi, apakah itu membuat teman nyaman bermain bersama?"}
-  ],
-  closing: "Coba sebutkan satu aturan saat bermain bersama teman."
-};
-const closingBermain = "Coba sebutkan satu aturan saat bermain bersama teman.";
-
-// BAGIAN 9 — Apa itu Aturan
-const kataAturan = ["TERATUR", "NYAMAN", "AMAN", "BERANTAKAN"];
-const kataBenar = ["TERATUR", "NYAMAN", "AMAN"];
-const kesimpulanAturan = "Jadi, aturan adalah hal yang harus kita lakukan supaya hidup menjadi teratur, nyaman, dan aman.";
-
-// BAGIAN 10 — Tantangan Terakhir
-const kartuReviewRumahSekolah = [
-  // RUMAH — 4 kartu
-  {img:"05-merapikan-tempat-tidur.png", label:"Merapikan tempat tidur", target:"rumah"},
-  {img:"11-merapikan-mainan.png", label:"Merapikan mainan", target:"rumah"},
-  {img:"09-mengangkat-tangan.png", label:"Menyikat gigi sampai bersih", target:"rumah"},
-  {img:"19-duduk-saat-makan.png", label:"Duduk saat makan", target:"rumah"},
-  // SEKOLAH — 4 kartu
-  {img:"03-duduk-tertib.png", label:"Duduk tertib", target:"sekolah"},
-  {img:"15-meminta-izin.png", label:"Meminta izin saat meminjam barang", target:"sekolah"},
-  {img:"17-mendengarkan-teman.png", label:"Mendengarkan teman", target:"sekolah"},
-  {img:"18-merapikan-alat-belajar.png", label:"Merapikan alat belajar", target:"sekolah"}
-];
-const kartuReviewMakanBermain = [
-  // MAKAN — 4 kartu
-  {img:"10-cuci-tangan.png", label:"Mencuci tangan", target:"makan"},
-  {img:"01-antre.png", label:"Antre mengambil makanan", target:"makan"},
-  {img:"20-makan-bersama.png", label:"Makan bersama", target:"makan"},
-  {img:"22-merapikan-tempat-makan.png", label:"Merapikan tempat makan", target:"makan"},
-  // BERMAIN — 4 kartu
-  {img:"07-bermain-bergiliran.png", label:"Bermain bergiliran", target:"bermain"},
-  {img:"13-berbagi-mainan.png", label:"Berbagi mainan", target:"bermain"},
-  {img:"23-menjaga-teman-aman.png", label:"Menjaga teman tetap aman", target:"bermain"},
-  {img:"24-mengembalikan-mainan.png", label:"Mengembalikan mainan", target:"bermain"}
-];
+const kesimpulanAturan = "Aturan adalah hal yang harus kita lakukan supaya hidup menjadi teratur, nyaman, dan aman.";
 
 /* =========================================================
    NAVIGASI & MESIN LAYAR
    ========================================================= */
 
-// urutan: 0=cover, 1..10 = misi, 11 = penutup
-const MISI_COUNT = 10;
+// urutan: 0=cover, 1..8 = misi, 9 = penutup
+const MISI_COUNT = 8;
 let currentScreen = 0;
 const progressDone = new Array(MISI_COUNT + 1).fill(false); // index 1..9 dipakai
 
@@ -759,11 +718,11 @@ function goToScreen(index){
   const back = document.getElementById('btnBack');
   const next = document.getElementById('btnNext');
   back.style.visibility = index === 0 ? 'hidden' : 'visible';
-  next.style.visibility = index === 11 ? 'hidden' : 'visible';
+  next.style.visibility = index === 9 ? 'hidden' : 'visible';
 }
 
 function nextScreen(){
-  if(currentScreen < 11) goToScreen(currentScreen + 1);
+  if(currentScreen < 9) goToScreen(currentScreen + 1);
 }
 function prevScreen(){
   if(currentScreen > 0) goToScreen(currentScreen - 1);
@@ -780,77 +739,57 @@ function el(tag, cls, html){
   return e;
 }
 
-// Acak urutan pilihan secara fair (Fisher-Yates).
-// Dipakai di semua aktivitas pilihan agar posisi jawaban benar tidak selalu sama.
-function shuffleArray(arr){
-  const copy = [...arr];
-  for(let i = copy.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
-}
-
 // Aktivitas: pilih salah satu dari dua gambar besar (tanpa indikator benar/salah)
 function renderChoiceTwo(container, data, onPicked){
   container.innerHTML = '';
-  const q = el('p','question', data.question);
-  container.appendChild(q);
+  container.appendChild(el('p','question', data.question));
 
   const row = el('div','choice-row');
-  // Acak posisi A/B setiap kali perbandingan ditampilkan, tetapi feedback tetap mengikuti isinya.
-  const choices = shuffleArray([
-    {key:'A', image:data.imageA, label:data.labelA},
-    {key:'B', image:data.imageB, label:data.labelB}
-  ]);
+  const options = [
+    {key:'A', img:data.imageA, label:data.labelA, feedback:data.feedbackA},
+    {key:'B', img:data.imageB, label:data.labelB, feedback:data.feedbackB}
+  ].sort(() => Math.random() - 0.5);
+
   const cards = {};
-  choices.forEach(choice => {
+  let pickedOnce = false;
+  const fb = el('div','feedback-box');
+
+  options.forEach(opt => {
     const card = el('div','choice-card');
-    card.appendChild(el('img')); card.querySelector('img').src = choice.image;
-    card.appendChild(el('div','label', choice.label));
-    cards[choice.key] = card;
+    const img = el('img'); img.src = opt.img; card.appendChild(img);
+    card.appendChild(el('div','label', opt.label));
+    card.addEventListener('click', () => {
+      Object.values(cards).forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      fb.textContent = opt.feedback;
+      fb.classList.add('show');
+      if(!pickedOnce){
+        pickedOnce = true;
+        if(data.closingAfterPick){
+          const rara = el('div','rara-row');
+          rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
+          rara.appendChild(el('div','rara-text', data.closingAfterPick));
+          container.appendChild(rara);
+        }
+      }
+      if(onPicked) onPicked();
+    });
+    cards[opt.key] = card;
     row.appendChild(card);
   });
-  const cardA = cards.A;
-  const cardB = cards.B;
   container.appendChild(row);
-
-  if(data.followUp){
-    container.appendChild(el('p','question', data.followUp));
-  }
-
-  const fb = el('div','feedback-box');
+  if(data.followUp) container.appendChild(el('p','question', data.followUp));
   container.appendChild(fb);
-
-  let pickedOnce = false;
-  function pick(which){
-    cardA.classList.toggle('selected', which==='A');
-    cardB.classList.toggle('selected', which==='B');
-    fb.textContent = which==='A' ? data.feedbackA : data.feedbackB;
-    fb.classList.add('show');
-    if(!pickedOnce){
-      pickedOnce = true;
-      if(data.closingAfterPick){
-        const rara = el('div','rara-row');
-        rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
-        rara.appendChild(el('div','rara-text', data.closingAfterPick));
-        container.appendChild(rara);
-      }
-    }
-    if(onPicked) onPicked();
-  }
-  cardA.addEventListener('click', () => pick('A'));
-  cardB.addEventListener('click', () => pick('B'));
 }
 
 // Aktivitas: kelompokkan kartu (tap kartu lalu tap kategori tujuan)
 function renderGrouping(container, categories, cards, onProgress){
   container.innerHTML = '';
-  container.appendChild(el('p','question', 'Sentuh satu kartu, lalu sentuh tempat yang sesuai. Ulangi sampai semua kartu selesai.'));
+  container.appendChild(el('p','question', 'Sentuh kartu, lalu sentuh tempat yang sesuai.'));
 
   const zone = el('div','group-zone');
   const catBoxes = {};
-  shuffleArray(categories).forEach(cat => {
+  categories.forEach(cat => {
     const box = el('div','category-box');
     box.appendChild(el('div','cat-emoji', cat.emoji));
     box.appendChild(el('div','cat-name', cat.name));
@@ -871,7 +810,8 @@ function renderGrouping(container, categories, cards, onProgress){
   let selectedCard = null;
   let placedCount = 0;
 
-  const cardEls = shuffleArray(cards).map((c) => {
+  const shuffledCards = [...cards].sort(() => Math.random() - 0.5);
+  const cardEls = shuffledCards.map((c) => {
     const card = el('div','flash-card');
     const img = el('img'); img.src = c.img; card.appendChild(img);
     card.appendChild(el('div','cap', c.label));
@@ -924,7 +864,7 @@ function renderMultiSelect(container, data, onSelect){
   const grid = el('div','grid-select');
   const fb = el('div','feedback-box');
   let closingShown = false;
-  shuffleArray(data.items).forEach(item => {
+  [...data.items].sort(() => Math.random() - 0.5).forEach(item => {
     const card = el('div','grid-item');
     const img = el('img'); img.src = item.img; card.appendChild(img);
     card.appendChild(el('div','cap', item.label));
@@ -998,7 +938,7 @@ function renderOrdering(container, steps, onDone){
   container.appendChild(slotRow);
 
   const tray = el('div','card-tray');
-  const shuffled = shuffleArray(steps);
+  const shuffled = [...steps].sort(() => Math.random() - 0.5);
   const fb = el('div','feedback-box');
 
   let nextExpected = 1;
@@ -1040,7 +980,7 @@ function renderWordPick(container, words, correctWords, onProgress){
   container.appendChild(el('p','question','Sentuh kata yang menurutmu berhubungan dengan aturan.'));
   const row = el('div','word-row');
   const fb = el('div','feedback-box');
-  shuffleArray(words).forEach(w => {
+  [...words].sort(() => Math.random() - 0.5).forEach(w => {
     const chip = el('div','word-chip', w);
     chip.addEventListener('click', () => {
       chip.classList.toggle('selected');
@@ -1077,175 +1017,96 @@ function makeScreen(id){
   inner.appendChild(el('h1','title','YUK, KENALI ATURAN!'));
   const rara = el('div','rara-row');
   rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
-  rara.appendChild(el('div','rara-text','Halo! Aku Rara. Hari ini kita akan mencari tahu tentang aturan. Yuk, kita mulai!'));
+  rara.appendChild(el('div','rara-text','Halo! Aku Rara. Hari ini kita akan menjadi Detektif Aturan. Siap menghadapi 8 misi?'));
   inner.appendChild(rara);
-  inner.appendChild(el('p','question','Menurutmu, mengapa kita membutuhkan aturan?'));
+  inner.appendChild(el('p','question','Kita akan mencari tahu aturan di rumah, sekolah, saat makan, dan saat bermain.'));
   const illus = el('div','cover-illustration');
-  ['🏠','🏫','🍽️','🎲'].forEach(e => {
-    const box = el('div','mini', e);
-    illus.appendChild(box);
-  });
+  ['🏠','🏫','🍽️','🎲'].forEach(e => illus.appendChild(el('div','mini', e)));
   inner.appendChild(illus);
-  inner.appendChild(el('p','subtitle','Ayo bantu Rara menjadi Detektif Aturan! Sentuh tombol di bawah untuk memulai misi.'));
+  inner.appendChild(el('p','subtitle','Setiap misi punya tantangan berbeda. Perhatikan baik-baik karena posisi jawaban akan diacak!'));
   const startBtn = el('button','btn btn-primary','MULAI MISI 🔎');
   startBtn.onclick = () => goToScreen(1);
   inner.appendChild(startBtn);
 })();
 
-/* ---- Layar 1 (Misi 1): Mengamati Situasi ---- */
 (function buildMisi1(){
   const inner = makeScreen(1);
-  inner.appendChild(el('h1','title','Misi 1: Mengamati Situasi'));
+  inner.appendChild(el('h1','title','Misi 1: Kenali Aturan 🔎'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-  renderChoiceTwo(body, dataMengamati, () => markDone(1));
+  renderChoiceTwo(body, dataMisi1, () => markDone(1));
 })();
 
-/* ---- Layar 2 (Misi 2): Manfaat Mematuhi Aturan ---- */
 (function buildMisi2(){
   const inner = makeScreen(2);
-  inner.appendChild(el('h1','title','Misi 2: Manfaat Mematuhi Aturan'));
+  inner.appendChild(el('h1','title','Misi 2: Rumah atau Sekolah? 🏠🏫'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-  renderChoiceSequence(body, dataManfaat, kesimpulanManfaat, () => markDone(2));
+  renderGrouping(body, kategoriRumahSekolah, kartuRumahSekolah, (placed, total) => {
+    if(placed >= total) markDone(2);
+  });
 })();
 
-/* ---- Layar 3 (Misi 3): Misi Mengelompokkan ---- */
 (function buildMisi3(){
   const inner = makeScreen(3);
-  inner.appendChild(el('h1','title','Misi 3: Di Mana Aturan Ini Dilakukan?'));
+  inner.appendChild(el('h1','title','Misi 3: Mana yang Lebih Baik? ⚖️'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-  renderGrouping(body, kategoriTempat, kartuKelompok, (placed, total) => {
-    if(placed >= Math.min(6, total)) markDone(3);
-  });
+  renderChoiceSequence(body, dataMisi3, 'Aturan membantu rumah tetap rapi dan nyaman.', () => markDone(3));
 })();
 
-/* ---- Layar 4 (Misi 4): Aturan di Rumah ---- */
 (function buildMisi4(){
   const inner = makeScreen(4);
-  inner.appendChild(el('h1','title','Misi 4: 🏠 Aturan di Rumah'));
+  inner.appendChild(el('h1','title','Misi 4: Boleh atau Tidak? 🚦'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-
-  const vsWrap = el('div');
-  body.appendChild(vsWrap);
-  renderChoiceSequence(vsWrap, dataRumahVs, '', () => {
-    const done = el('div','rara-row');
-    done.appendChild(el('div','rara-avatar','🙋‍♀️'));
-    done.appendChild(el('div','rara-text','Bagus! Dari dua perbandingan tadi, kita bisa melihat bahwa aturan di rumah membantu menjaga rumah tetap rapi dan nyaman.'));
-    body.appendChild(done);
-    markDone(4);
+  body.appendChild(el('p','subtitle','Pikirkan baik-baik sebelum memilih. Tidak semua kegiatan boleh dilakukan sembarangan.'));
+  renderGrouping(body, kategoriBolehTidak, kartuBolehTidak, (placed, total) => {
+    if(placed >= total) markDone(4);
   });
 })();
 
-/* ---- Layar 5 (Misi 5): Aturan di Sekolah ---- */
 (function buildMisi5(){
   const inner = makeScreen(5);
-  inner.appendChild(el('h1','title','Misi 5: 🏫 Aturan di Sekolah'));
+  inner.appendChild(el('h1','title','Misi 5: Susun Langkahnya 🧩'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-  renderMultiSelect(body, dataSekolah, () => markDone(5));
+  renderOrdering(body, dataMisi5, () => markDone(5));
 })();
 
-/* ---- Layar 6 (Misi 6): Aturan saat Makan ---- */
 (function buildMisi6(){
   const inner = makeScreen(6);
-  inner.appendChild(el('h1','title','Misi 6: 🍽️ Aturan saat Makan'));
+  inner.appendChild(el('h1','title','Misi 6: Kalau Kamu Jadi Dia... 💭'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-
-  const orderWrap = el('div');
-  body.appendChild(orderWrap);
-  renderOrdering(orderWrap, dataUrutanMakan, () => {
-    setTimeout(() => {
-      orderWrap.innerHTML = '';
-      const vsWrap = el('div');
-      body.appendChild(vsWrap);
-      renderChoiceSequence(vsWrap, dataMakanVs, '', () => {
-        const done = el('div','rara-row');
-        done.appendChild(el('div','rara-avatar','🙋‍♀️'));
-        done.appendChild(el('div','rara-text','Bagus! Saat makan, kita perlu mengikuti aturan agar kegiatan berlangsung tertib, nyaman, dan aman.'));
-        body.appendChild(done);
-        markDone(6);
-      });
-    }, 600);
-  });
+  renderChoiceSequence(body, dataMisi6, 'Sekarang kamu sudah bisa memilih tindakan yang sesuai aturan dalam berbagai situasi.', () => markDone(6));
 })();
 
-/* ---- Layar 7 (Misi 7): Aturan saat Bermain ---- */
 (function buildMisi7(){
   const inner = makeScreen(7);
-  inner.appendChild(el('h1','title','Misi 7: 🎲 Aturan saat Bermain'));
+  inner.appendChild(el('h1','title','Misi 7: Perbaiki Kesalahannya 🛠️'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-
-  const seqWrap = el('div');
-  body.appendChild(seqWrap);
-  renderChoiceSequence(seqWrap, dataBermain, '', () => {
-    seqWrap.innerHTML = '';
-    const multiWrap = el('div');
-    body.appendChild(multiWrap);
-    renderMultiSelect(multiWrap, dataBermainTambahan, () => markDone(7));
-  });
+  renderChoiceSequence(body, dataMisi7, 'Hebat! Kamu bisa menemukan perilaku yang kurang tepat dan memilih cara memperbaikinya.', () => markDone(7));
 })();
 
-/* ---- Layar 8 (Misi 8): Apa itu Aturan? ---- */
 (function buildMisi8(){
   const inner = makeScreen(8);
-  inner.appendChild(el('h1','title','Misi 8: Apa Itu Aturan?'));
+  inner.appendChild(el('h1','title','Misi 8: Tantangan Besar! 🏆'));
   const body = el('div','screen-inner');
   inner.appendChild(body);
-
-  body.appendChild(el('p','subtitle','Kita sudah melihat banyak contoh. Menurutmu, apa itu aturan?'));
-  const wordArea = el('div');
-  body.appendChild(wordArea);
-
-  let selectedCount = 0;
-  renderWordPick(wordArea, kataAturan, kataBenar, () => {
-    selectedCount++;
-    if(selectedCount >= 3 && !document.getElementById('kesimpulan-aturan')){
-      const box = el('div','final-msg', kesimpulanAturan);
-      box.id = 'kesimpulan-aturan';
-      body.appendChild(box);
-      markDone(8);
-    }
+  body.appendChild(el('p','subtitle','Ini misi terakhir. Sentuh kartu, lalu sentuh tempat yang sesuai. Semua kartu sudah diacak!'));
+  renderGrouping(body, kategoriFinal, kartuFinal, (placed, total) => {
+    if(placed >= total) markDone(8);
   });
 })();
 
-/* ---- Layar 9 (Misi 9): Uji Ingatanmu — Rumah & Sekolah ---- */
-(function buildMisi9(){
-  const inner = makeScreen(9);
-  inner.appendChild(el('h1','title','Misi 9: Uji Ingatanmu 🧠'));
-  const body = el('div','screen-inner');
-  inner.appendChild(body);
-  const kategoriReviewRS = kategoriTempat.filter(cat => cat.id === 'rumah' || cat.id === 'sekolah');
-  body.appendChild(el('p','subtitle','Ada 8 kartu! Temukan mana yang termasuk aturan di rumah dan mana yang termasuk aturan di sekolah.'));
-  renderGrouping(body, kategoriReviewRS, kartuReviewRumahSekolah, (placed, total) => {
-    if(placed >= total) markDone(9);
-  });
-})();
-
-/* ---- Layar 10 (Misi 10): Uji Ingatanmu — Makan & Bermain ---- */
-(function buildMisi10(){
-  const inner = makeScreen(10);
-  inner.appendChild(el('h1','title','Misi 10: Uji Ingatanmu 🧠'));
-  const body = el('div','screen-inner');
-  inner.appendChild(body);
-  const kategoriReviewMB = kategoriTempat.filter(cat => cat.id === 'makan' || cat.id === 'bermain');
-  body.appendChild(el('p','subtitle','Ada 8 kartu! Temukan mana yang termasuk aturan saat makan dan mana yang termasuk aturan saat bermain.'));
-  renderGrouping(body, kategoriReviewMB, kartuReviewMakanBermain, (placed, total) => {
-    if(placed >= total) markDone(10);
-  });
-})();
-
-/* ---- Layar 11: Penutup ---- */
 (function buildPenutup(){
-  const inner = makeScreen(11);
+  const inner = makeScreen(9);
   inner.appendChild(el('h1','title','Misi Selesai! 🎉'));
   const rara = el('div','rara-row');
   rara.appendChild(el('div','rara-avatar','🙋‍♀️'));
-  rara.appendChild(el('div','rara-text','Kerja bagus, Detektif Aturan! Kalian sudah menemukan banyak contoh aturan di rumah, sekolah, saat makan, dan saat bermain.'));
+  rara.appendChild(el('div','rara-text','Kerja bagus, Detektif Aturan! Kalian sudah berlatih mengenali, membandingkan, memilih, mengurutkan, dan memperbaiki perilaku sesuai aturan.'));
   inner.appendChild(rara);
   inner.appendChild(el('div','final-msg', kesimpulanAturan));
   inner.appendChild(el('p','subtitle','Sekarang, ayo lanjutkan dengan bermain peran bersama teman-teman!'));
